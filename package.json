@@ -4,7 +4,7 @@
   "description": "A fast, composable command line interface for Notion",
   "type": "module",
   "bin": {
-    "notion-cli": "./bin/notion-cli.js"
+    "notion-cli": "bin/notion-cli.js"
   },
   "scripts": {
     "start": "bun run src/index.ts",
@@ -33,7 +33,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/brueshi/notion-cli.git"
+    "url": "git+https://github.com/brueshi/notion-cli.git"
   },
   "homepage": "https://github.com/brueshi/notion-cli#readme",
   "bugs": {
