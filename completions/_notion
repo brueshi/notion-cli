@@ -1,0 +1,105 @@
+#compdef notion
+# Zsh completion for notion CLI
+# Install: place in your $fpath (e.g., ~/.zsh/completions/)
+# Then run: compinit
+
+_notion() {
+    local line state
+
+    _arguments -C \
+        '-V[Show version]' \
+        '--version[Show version]' \
+        '-h[Show help]' \
+        '--help[Show help]' \
+        '1: :->command' \
+        '*::arg:->args'
+
+    case $state in
+        command)
+            local commands=(
+                'search:Search pages and databases'
+                'page:Page operations'
+                'context:Extract page content for AI'
+                'config:Manage configuration'
+                'help:Show help'
+            )
+            _describe 'command' commands
+            ;;
+        args)
+            case $line[1] in
+                search)
+                    _arguments \
+                        '-l[Maximum results]:limit:' \
+                        '--limit[Maximum results]:limit:' \
+                        '-f[Output format]:format:(json markdown xml)' \
+                        '--format[Output format]:format:(json markdown xml)' \
+                        '-p[Filter to pages only]' \
+                        '--pages[Filter to pages only]' \
+                        '-d[Filter to databases only]' \
+                        '--databases[Filter to databases only]' \
+                        '-h[Show help]' \
+                        '--help[Show help]' \
+                        ':query:'
+                    ;;
+                page)
+                    local -a page_commands
+                    page_commands=(
+                        'get:Retrieve page content'
+                        'create:Create a new page'
+                    )
+
+                    if (( CURRENT == 2 )); then
+                        _describe 'page command' page_commands
+                    else
+                        case $line[2] in
+                            get)
+                                _arguments \
+                                    '-f[Output format]:format:(json markdown xml)' \
+                                    '--format[Output format]:format:(json markdown xml)' \
+                                    '-D[Block recursion depth]:depth:' \
+                                    '--depth[Block recursion depth]:depth:' \
+                                    '-h[Show help]' \
+                                    '--help[Show help]' \
+                                    ':page-id:'
+                                ;;
+                            create)
+                                _arguments \
+                                    '-p[Parent page ID]:parent:' \
+                                    '--parent[Parent page ID]:parent:' \
+                                    '-f[Read from file]:file:_files' \
+                                    '--file[Read from file]:file:_files' \
+                                    '--stdin[Read from stdin]' \
+                                    '-h[Show help]' \
+                                    '--help[Show help]' \
+                                    ':title:'
+                                ;;
+                        esac
+                    fi
+                    ;;
+                context)
+                    _arguments \
+                        '-f[Output format]:format:(xml markdown)' \
+                        '--format[Output format]:format:(xml markdown)' \
+                        '-t[Token limit]:tokens:' \
+                        '--max-tokens[Token limit]:tokens:' \
+                        '-h[Show help]' \
+                        '--help[Show help]' \
+                        ':page-id:'
+                    ;;
+                config)
+                    _arguments \
+                        '-t[Set API token]:token:' \
+                        '--token[Set API token]:token:' \
+                        '-p[Set default parent]:parent:' \
+                        '--parent[Set default parent]:parent:' \
+                        '-s[Show current config]' \
+                        '--show[Show current config]' \
+                        '-h[Show help]' \
+                        '--help[Show help]'
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_notion "$@"

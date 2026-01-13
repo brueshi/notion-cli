@@ -1,0 +1,55 @@
+{
+  "name": "@brueshi/notion-cli",
+  "version": "0.0.1",
+  "description": "A fast, composable command line interface for Notion",
+  "type": "module",
+  "bin": {
+    "notion-cli": "./bin/notion-cli.js"
+  },
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun run --watch src/index.ts",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "build:zig": "cd zig && zig build -Doptimize=ReleaseFast",
+    "typecheck": "tsc --noEmit"
+  },
+  "files": [
+    "bin",
+    "src",
+    "completions",
+    "README.md"
+  ],
+  "keywords": [
+    "notion",
+    "cli",
+    "productivity",
+    "documentation",
+    "ai",
+    "markdown",
+    "bun"
+  ],
+  "author": "brueshi",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brueshi/notion-cli.git"
+  },
+  "homepage": "https://github.com/brueshi/notion-cli#readme",
+  "bugs": {
+    "url": "https://github.com/brueshi/notion-cli/issues"
+  },
+  "dependencies": {
+    "@notionhq/client": "^2.2.15",
+    "@tryfabric/martian": "^1.2.4",
+    "notion-to-md": "^3.1.1",
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}
