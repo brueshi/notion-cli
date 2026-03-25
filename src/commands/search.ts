@@ -98,7 +98,7 @@ async function executeSearch(
         id: result.id,
         type: isPage ? "page" : "database",
         title: extractSearchResultTitle(result),
-        url: "url" in result ? result.url : `https://notion.so/${result.id.replace(/-/g, "")}`,
+        url: "url" in result ? (result as any).url : `https://notion.so/${result.id.replace(/-/g, "")}`,
         lastEdited,
       };
     });

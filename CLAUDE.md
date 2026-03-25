@@ -26,10 +26,18 @@ src/
     context.ts          # AI context extraction
     page/
       get.ts            # Page retrieval
-      create.ts         # Page creation
+      create.ts         # Page creation (standalone or subpage)
+      update.ts         # Page title/content update
+      move.ts           # Move page to new parent
+      delete.ts         # Archive (soft-delete) page
       index.ts          # Page command group
+    db/
+      query.ts          # Database query with filters/sorts
+      index.ts          # Database command group
+    comment/
+      index.ts          # Comment add/list commands
   lib/
-    client.ts           # Notion SDK wrapper
+    client.ts           # Notion SDK wrapper (all API calls)
     config.ts           # Config file management
     transformer.ts      # XML/Markdown transforms
     errors.ts           # Error handling utilities
@@ -43,9 +51,7 @@ tests/                  # Bun test files
 
 ## Key Dependencies
 
-- `@notionhq/client` - Official Notion SDK
-- `@tryfabric/martian` - Markdown to Notion blocks
-- `notion-to-md` - Notion blocks to Markdown
+- `@notionhq/client` ^5.14.0 - Official Notion SDK (native markdown support)
 - `commander` - CLI argument parsing
 
 ## Configuration
@@ -53,4 +59,4 @@ tests/                  # Bun test files
 Config stored at `~/.config/notion-cli/config.json` or via environment:
 
 - `NOTION_TOKEN` - API integration token
-- `NOTION_PARENT_ID` - Default parent page ID
+- `NOTION_PARENT_ID` - Default parent page ID (optional — pages can be created standalone)

@@ -1,9 +1,8 @@
 import { Command } from "commander";
 import { readFileSync, existsSync } from "fs";
-import { markdownToBlocks } from "@tryfabric/martian";
 import { createPage } from "../../lib/client";
 import { loadConfig } from "../../lib/config";
-import { handleNotionError, ConfigurationError, ValidationError } from "../../lib/errors";
+import { handleNotionError, ValidationError } from "../../lib/errors";
 import type { PageCreateOptions } from "../../types";
 
 /**
@@ -49,18 +48,11 @@ async function executePageCreate(
   options: PageCreateOptions
 ): Promise<void> {
   try {
-    // Determine parent ID
+    // Determine parent ID (optional — omit for standalone workspace page)
     let parentId = options.parent;
     if (!parentId) {
       const config = loadConfig();
       parentId = config?.parentId;
-    }
-
-    if (!parentId) {
-      throw new ConfigurationError(
-        "No parent ID specified.",
-        "Use --parent <id> or set a default with: notion config --parent <page-id>"
-      );
     }
 
     // Get content from file or stdin
@@ -78,17 +70,11 @@ async function executePageCreate(
       content = await readStdin();
     }
 
-    // Convert markdown to Notion blocks
-    let children: ReturnType<typeof markdownToBlocks> | undefined;
-    if (content) {
-      children = markdownToBlocks(content);
-    }
-
-    // Create the page
+    // Create the page using native markdown support
     const response = await createPage({
       parentId,
       title,
-      children: children as Parameters<typeof createPage>[0]["children"],
+      markdown: content || undefined,
     });
 
     // Output result
@@ -97,7 +83,8 @@ async function executePageCreate(
         ? response.url
         : `https://notion.so/${response.id.replace(/-/g, "")}`;
 
-    console.log(`Page created successfully!`);
+    const location = parentId ? "as subpage" : "in workspace";
+    console.log(`Page created ${location} successfully!`);
     console.log(`  ID:  ${response.id}`);
     console.log(`  URL: ${pageUrl}`);
   } catch (error) {
@@ -110,9 +97,9 @@ async function executePageCreate(
  */
 export function createPageCreateCommand(): Command {
   const cmd = new Command("create")
-    .description("Create a new page from markdown")
+    .description("Create a new page (standalone or as subpage)")
     .argument("<title>", "Page title")
-    .option("-p, --parent <id>", "Parent page or database ID")
+    .option("-p, --parent <id>", "Parent page or database ID (omit for standalone page)")
     .option("-f, --file <path>", "Read content from markdown file")
     .option("--stdin", "Read content from stdin")
     .action(async (title: string, opts) => {

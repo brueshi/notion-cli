@@ -1,20 +1,38 @@
 import type {
   PageObjectResponse,
   DatabaseObjectResponse,
+  DataSourceObjectResponse,
   BlockObjectResponse,
   SearchResponse,
   GetPageResponse,
   ListBlockChildrenResponse,
+  CreatePageResponse,
+  GetPageMarkdownResponse,
+  UpdatePageMarkdownResponse,
+  MovePageResponse,
+  QueryDataSourceResponse,
+  CommentObjectResponse,
+  CreateCommentResponse,
+  ListCommentsResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 
 // Re-export Notion SDK types
 export type {
   PageObjectResponse,
   DatabaseObjectResponse,
+  DataSourceObjectResponse,
   BlockObjectResponse,
   SearchResponse,
   GetPageResponse,
   ListBlockChildrenResponse,
+  CreatePageResponse,
+  GetPageMarkdownResponse,
+  UpdatePageMarkdownResponse,
+  MovePageResponse,
+  QueryDataSourceResponse,
+  CommentObjectResponse,
+  CreateCommentResponse,
+  ListCommentsResponse,
 };
 
 // Config types
@@ -47,10 +65,39 @@ export interface PageCreateOptions {
   stdin?: boolean;
 }
 
+// Page update options
+export interface PageUpdateOptions {
+  title?: string;
+  file?: string;
+  stdin?: boolean;
+}
+
+// Page move options
+export interface PageMoveOptions {
+  to: string;
+}
+
 // Context options
 export interface ContextOptions {
   format?: "xml" | "markdown";
   maxTokens?: number;
+}
+
+// Database query options
+export interface DbQueryOptions {
+  filter?: string;
+  sort?: string;
+  limit?: number;
+  format?: OutputFormat;
+}
+
+// Comment options
+export interface CommentAddOptions {
+  // no additional options needed
+}
+
+export interface CommentListOptions {
+  format?: OutputFormat;
 }
 
 // Simplified search result for output
