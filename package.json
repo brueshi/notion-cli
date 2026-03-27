@@ -1,6 +1,6 @@
 {
   "name": "@brueshi/notion-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A fast, composable command line interface for Notion",
   "type": "module",
   "bin": {

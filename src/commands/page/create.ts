@@ -50,7 +50,7 @@ async function executePageCreate(
   try {
     // Determine parent ID (optional — omit for standalone workspace page)
     let parentId = options.parent;
-    if (!parentId) {
+    if (!parentId && !options.standalone) {
       const config = loadConfig();
       parentId = config?.parentId;
     }
@@ -100,11 +100,13 @@ export function createPageCreateCommand(): Command {
     .description("Create a new page (standalone or as subpage)")
     .argument("<title>", "Page title")
     .option("-p, --parent <id>", "Parent page or database ID (omit for standalone page)")
+    .option("-S, --standalone", "Create as standalone workspace page (ignore default parent)")
     .option("-f, --file <path>", "Read content from markdown file")
     .option("--stdin", "Read content from stdin")
     .action(async (title: string, opts) => {
       await executePageCreate(title, {
         parent: opts.parent,
+        standalone: opts.standalone,
         file: opts.file,
         stdin: opts.stdin,
       });

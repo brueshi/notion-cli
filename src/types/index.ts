@@ -63,6 +63,7 @@ export interface PageCreateOptions {
   parent?: string;
   file?: string;
   stdin?: boolean;
+  standalone?: boolean;
 }
 
 // Page update options

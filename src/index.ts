@@ -12,7 +12,7 @@ const program = new Command();
 program
   .name("notion")
   .description("A fast, composable CLI for Notion")
-  .version("0.1.0");
+  .version("0.1.1");
 
 // Add commands
 program.addCommand(createSearchCommand());
